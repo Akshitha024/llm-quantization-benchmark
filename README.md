@@ -120,7 +120,7 @@ flowchart LR
     D --> F[evals.decode_latency_ms_per_token]
     E --> G[BenchResult]
     F --> G
-    G --> H[results/<model>__<recipe>.json]
+    G --> H["results/<model>__<recipe>.json"]
     H --> I[viz.charts]
     I --> J[5 figures]
 ```
