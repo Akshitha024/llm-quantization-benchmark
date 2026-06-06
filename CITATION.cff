@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: qs — Quantization suite
+authors:
+  - family-names: Lingampally
+    given-names: Akshitha Reddy
+type: software
+date-released: 2024-12-03
+repository-code: https://github.com/Akshitha024/quantization-suite
+license: MIT
+references:
+  - type: article
+    title: "GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers"
+    authors: [{family-names: Frantar, given-names: Elias}]
+    year: 2022
+    url: https://arxiv.org/abs/2210.17323
+  - type: article
+    title: "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration"
+    authors: [{family-names: Lin, given-names: Ji}]
+    year: 2023
+    url: https://arxiv.org/abs/2306.00978
+  - type: article
+    title: "LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale"
+    authors: [{family-names: Dettmers, given-names: Tim}]
+    year: 2022
+    url: https://arxiv.org/abs/2208.07339
+  - type: article
+    title: "QLoRA: Efficient Finetuning of Quantized LLMs"
+    authors: [{family-names: Dettmers, given-names: Tim}]
+    year: 2023
+    url: https://arxiv.org/abs/2305.14314
