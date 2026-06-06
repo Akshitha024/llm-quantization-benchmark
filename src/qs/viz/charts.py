@@ -144,6 +144,9 @@ def plot_perplexity_retention(results_dir: Path, out: Path) -> Path:
         return out
     base_ppl = baseline["perplexity"]
     rows = [r for r in rows if r["recipe"] != baseline["recipe"]]
+    if not rows:
+        out.write_bytes(b"")
+        return out
     names = [r["recipe"] for r in rows]
     # retention = base_ppl / candidate_ppl: 1.0 means identical, <1 means worse
     retention = [base_ppl / r["perplexity"] for r in rows]
