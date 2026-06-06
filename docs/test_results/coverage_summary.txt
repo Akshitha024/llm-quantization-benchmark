@@ -1,0 +1,21 @@
+..........                                                               [100%]
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.11.14-final-0 _______________
+
+Name                         Stmts   Miss  Cover
+------------------------------------------------
+src/qs/__init__.py               1      0   100%
+src/qs/cli/__init__.py           0      0   100%
+src/qs/cli/main.py              35     35     0%
+src/qs/evals/__init__.py         0      0   100%
+src/qs/evals/latency.py         16     16     0%
+src/qs/evals/perplexity.py      39     39     0%
+src/qs/recipes/__init__.py       0      0   100%
+src/qs/recipes/loader.py        59     59     0%
+src/qs/recipes/registry.py       9      0   100%
+src/qs/runner.py                41     41     0%
+src/qs/types.py                 19      0   100%
+src/qs/viz/__init__.py           0      0   100%
+src/qs/viz/charts.py           155     16    90%
+------------------------------------------------
+TOTAL                          374    206    45%
