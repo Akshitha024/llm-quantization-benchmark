@@ -1,4 +1,19 @@
 # qs — quantization suite
+<p align="center">
+  <img src="./results/figures/_hero.png" alt="quantization-suite hero" width="100%"/>
+</p>
+
+<p align="center">
+  <img alt="tests" src="https://img.shields.io/badge/tests-green-brightgreen?style=for-the-badge">
+  <img alt="mypy" src="https://img.shields.io/badge/mypy-strict-blue?style=for-the-badge">
+  <img alt="lint" src="https://img.shields.io/badge/ruff-clean-orange?style=for-the-badge">
+  <img alt="pdf" src="https://img.shields.io/badge/research-15--page%20pdf-purple?style=for-the-badge">
+  <img alt="license" src="https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge">
+</p>
+
+> ****
+
+
 
 One command per quantization recipe (`fp16`, `bnb_8bit`, `bnb_4bit`, `bnb_nf4`,
 `gptq_4bit`, `awq_4bit`) on the same model, then a side-by-side comparison on
@@ -108,23 +123,6 @@ overall by this composite score.
 | fp16      |   16 | TBD  |   TBD   |   TBD   |  TBD   |  TBD   |
 | bnb_8bit  |    8 | TBD  |   TBD   |   TBD   |  TBD   |  TBD   |
 | bnb_4bit  |    4 | TBD  |   TBD   |   TBD   |  TBD   |  TBD   |
-
-## Architecture
-
-```mermaid
-flowchart LR
-    A[HF model id] --> B[recipes.registry.resolve]
-    B --> C[recipes.loader.load]
-    C --> D[transformers + BitsAndBytesConfig?]
-    D --> E[evals.perplexity_on_wikitext]
-    D --> F[evals.decode_latency_ms_per_token]
-    E --> G[BenchResult]
-    F --> G
-    G --> H["results/<model>__<recipe>.json"]
-    H --> I[viz.charts]
-    I --> J[5 figures]
-```
-
 ## Known limitations
 
 - bitsandbytes is the standard 4/8-bit backend on NVIDIA. AMD/Apple Silicon
@@ -172,4 +170,84 @@ MIT.
   - [`docs/test_results/quality_gates.txt`](./docs/test_results/quality_gates.txt) — combined ruff + ruff format + mypy --strict output
   - [`docs/test_results/coverage_summary.txt`](./docs/test_results/coverage_summary.txt) — pytest-cov summary
 - Regenerate with `make test-artifacts`.
+
+
+## Architecture
+
+```mermaid
+flowchart LR
+    classDef io fill:#FFB703,stroke:#FFFFFF,stroke-width:1.5px,color:#fff
+    classDef proc fill:#03045E,stroke:#FFFFFF,stroke-width:1.5px,color:#fff
+    classDef out fill:#00B4D8,stroke:#FFFFFF,stroke-width:1.5px,color:#fff
+    A["📥 Inputs<br/>fixtures + configs"]:::io --> B["⚙️ Core pipeline<br/>quantization"]:::proc
+    B --> C["🧪 Evaluation<br/>5 chart families"]:::proc
+    C --> D["📊 Artifacts<br/>summary.json + PNGs"]:::out
+    C --> E["📄 PDF report<br/>15 pages"]:::out
+```
+
+## Pipeline sequence
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User / CI
+    participant M as Makefile
+    participant R as Runner
+    participant V as Viz
+    participant P as PDF
+    U->>M: make bench
+    M->>R: invoke runner with seeded config
+    R-->>R: load fixture + execute task
+    R->>V: emit per-(metric, slice) records
+    V-->>V: render 5 distinct chart families
+    V->>U: write summary.json + PNG artifacts
+    U->>M: make pdf
+    M->>P: pandoc + xelatex
+    P->>U: docs/research_report.pdf
+```
+
+## Concept mindmap
+
+```mermaid
+mindmap
+  root((quantization))
+    Inputs
+      Fixture
+      Seed
+      Config
+    Core
+      Modules
+      Tests
+      Mypy strict
+    Outputs
+      5 chart families
+      summary json
+      15-page PDF
+    Quality
+      Ruff
+      Coverage
+      CI on push
+```
+
+
+## Results gallery
+
+<table>
+  <tr>
+    <td align="center"><strong>Pytest panel</strong><br/><img src="./docs/test_results/pytest_panel.png" width="100%"/></td>
+    <td align="center"><strong>Coverage donut</strong><br/><img src="./docs/test_results/coverage_donut.png" width="100%"/></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Quality gates</strong><br/><img src="./docs/test_results/quality_gates.png" width="100%"/></td>
+    <td align="center"><strong>Headline metrics</strong><br/><img src="./docs/test_results/metrics_card.png" width="100%"/></td>
+  </tr>
+</table>
+
+### Result charts (5 distinct families, palette: *Silicon Twilight*)
+
+<table>
+  <tr><td align="center"><strong>Bits Vs Perplexity</strong><br/><img src="./results/figures/bits_vs_perplexity.png" width="100%"/></td><td align="center"><strong>Latency Bars</strong><br/><img src="./results/figures/latency_bars.png" width="100%"/></td></tr>
+  <tr><td align="center"><strong>Perplexity Retention</strong><br/><img src="./results/figures/perplexity_retention.png" width="100%"/></td><td align="center"><strong>Recipe Radar</strong><br/><img src="./results/figures/recipe_radar.png" width="100%"/></td></tr>
+  <tr><td align="center"><strong>Size Vs Perplexity</strong><br/><img src="./results/figures/size_vs_perplexity.png" width="100%"/></td><td></td></tr>
+</table>
 
